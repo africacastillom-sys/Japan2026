@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🌸 Japón 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --sakura:#FFB7C5;--sakura-dark:#E8739A;--sakura-light:#FFF0F3;
+  --indigo:#2D3A8C;--indigo-light:#EEF0FC;
+  --gold:#C9922A;--gold-light:#FDF3E3;
+  --matcha:#5B8A5B;--matcha-light:#E8F3E8;
+  --cream:#FFFAF7;--paper:#FFF8F5;
+  --ink:#2A1F1A;--ink-soft:#6B5C55;--ink-faint:#B5A49D;
+  --border:#EDD9D0;--r:14px;--r-sm:10px;
+  --tab-h:64px;--header-h:56px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes sakura-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes fade-up{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slide-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes drawer-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+html,body{height:100%;overflow:hidden;background:var(--cream)}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);display:flex;flex-direction:column}
+
+/* ── SAKURA ── */
+.sakura-container{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.petal{position:absolute;top:-20px;animation:sakura-fall linear infinite;opacity:0;user-select:none}
+
+/* ── HEADER ── */
+.header{
+  height:var(--header-h);background:var(--sakura);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;flex-shrink:0;position:relative;overflow:hidden;
+  border-bottom:2px solid rgba(232,115,154,.3);
+}
+.header::after{content:'🌸';position:absolute;right:-8px;top:-10px;font-size:48px;opacity:.15;animation:spin-slow 18s linear infinite;pointer-events:none}
+.header-left{display:flex;align-items:center;gap:10px}
+.menu-btn{background:none;border:none;cursor:pointer;font-size:22px;padding:4px;line-height:1}
+.header-title{font-family:'Zen Maru Gothic',sans-serif;font-size:17px;font-weight:700;color:var(--indigo)}
+.header-title small{display:block;font-size:10px;color:var(--sakura-dark);font-family:'Noto Sans JP',sans-serif;font-weight:500;letter-spacing:.08em;margin-top:1px}
+.header-right{display:flex;gap:8px;align-items:center}
+.hdr-btn{background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--indigo);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:transform .1s}
+.hdr-btn:active{transform:scale(.94)}
+
+/* ── SCREEN CONTAINER ── */
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;gap:6px;padding:8px 14px;background:var(--paper);border-bottom:1.5px solid var(--border);overflow-x:auto;flex-shrink:0}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-chip{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;white-space:nowrap;font-family:'Noto Sans JP',sans-serif;transition:all .15s;flex-shrink:0}
+.filter-chip:active{transform:scale(.94)}
+.filter-chip.active{background:var(--sakura-light);border-color:var(--sakura-dark);color:var(--sakura-dark)}
+.filter-chip.active-mine{background:var(--indigo-light);border-color:var(--indigo);color:var(--indigo)}
+.filter-chip.active-joined{background:var(--matcha-light);border-color:var(--matcha);color:var(--matcha)}
+.filter-chip-emoji{font-size:14px}
+.filter-empty{text-align:center;padding:32px 16px;color:var(--ink-soft)}
+.filter-empty .big{font-size:36px;margin-bottom:8px}
+.filter-empty p{font-size:13px;line-height:1.6}
+
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:14px 14px calc(var(--tab-h) + var(--safe-bottom) + 10px);display:none;background:var(--cream)}
+.screen.active{display:block}
+.screen::-webkit-scrollbar{display:none}
+
+/* ── DAY HEADER ── */
+.day-header{background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.day-title{font-family:'Zen Maru Gothic',sans-serif;font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.city-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1.5px solid currentColor}
+.day-date{font-size:11px;color:var(--ink-soft);margin-top:3px}
+.day-actions{display:flex;gap:6px}
+.day-action-btn{background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--gold);cursor:pointer;font-family:'Noto Sans JP',sans-serif}
+.day-action-btn:active{transform:scale(.94)}
+
+/* ── FLIGHT BANNER ── */
+.flight-banner{background:var(--indigo-light);border:1.5px solid var(--indigo);border-radius:var(--r);padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+.flight-banner::before{content:'✈';position:absolute;right:10px;top:6px;font-size:36px;opacity:.07}
+.flight-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.flight-airline-badge{font-size:11px;font-weight:700;color:white;background:var(--indigo);padding:3px 10px;border-radius:20px}
+.flight-nums{font-size:11px;color:var(--indigo);font-weight:500}
+.flight-seg{display:flex;align-items:center;margin-bottom:8px}
+.flight-seg:last-of-type{margin-bottom:0}
+.seg-airport{text-align:center;min-width:52px}
+.seg-iata{font-size:20px;font-weight:700;color:var(--indigo);font-family:'Zen Maru Gothic',sans-serif}
+.seg-city{font-size:9px;color:var(--ink-soft)}
+.seg-time{font-size:12px;font-weight:700;color:var(--ink);margin-top:2px}
+.seg-connector{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 4px}
+.seg-line{width:100%;height:1.5px;background:var(--indigo);opacity:.25}
+.seg-stop-pill{font-size:9px;color:var(--indigo);font-weight:600;background:white;border:1px solid var(--indigo);border-radius:20px;padding:1px 6px;white-space:nowrap}
+.flight-note{font-size:10px;color:var(--ink-soft);margin-top:10px;padding-top:8px;border-top:1px solid rgba(45,58,140,.15)}
+
+/* ── SECTION HEADERS ── */
+.section-hd{display:flex;align-items:center;gap:8px;margin:16px 0 8px}
+.section-hd:first-child{margin-top:0}
+.section-hd-line{flex:1;height:1px;background:var(--border)}
+.section-hd-label{font-size:10px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+
+/* ── ACTIVITY CARDS ── */
+.act-list{display:flex;flex-direction:column;gap:6px}
+.act-card{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;background:white;border:1.5px solid var(--border);border-radius:var(--r);animation:fade-up .2s ease both}
+.act-card:active{background:var(--sakura-light)}
+.act-time{font-size:11px;font-weight:700;color:var(--ink);min-width:38px;padding-top:2px}
+.act-time-dash{font-size:13px;color:var(--ink-faint);min-width:38px;padding-top:2px}
+.act-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+.act-body{flex:1;min-width:0}
+.act-name{font-size:13px;color:var(--ink);font-weight:600;line-height:1.35}
+.act-note{font-size:11px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
+.act-del{background:none;border:none;cursor:pointer;font-size:15px;line-height:1;padding:2px;opacity:.25;transition:opacity .12s;flex-shrink:0;align-self:flex-start}
+.act-del:active{opacity:1}
+
+/* ── ADD BTN ── */
+.add-inline-btn{width:100%;padding:13px;background:transparent;border:2px dashed var(--sakura);border-radius:var(--r);font-size:13px;color:var(--sakura-dark);cursor:pointer;text-align:center;font-weight:600;font-family:'Noto Sans JP',sans-serif;margin-top:8px}
+.add-inline-btn:active{background:var(--sakura-light)}
+
+/* ── WEATHER PANEL ── */
+.weather-panel{background:rgba(102,126,234,.06);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.weather-icon{font-size:36px;animation:float 4s ease-in-out infinite}
+.weather-temp{font-size:20px;font-weight:700;font-family:'Zen Maru Gothic',sans-serif;color:var(--ink)}
+.weather-desc{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.weather-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.weather-tag{font-size:10px;background:white;border:1px solid var(--border);border-radius:20px;padding:2px 7px;color:var(--ink-soft)}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:40px 16px;color:var(--ink-soft)}
+.empty-state .big{font-size:44px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+.empty-state p{font-size:13px;line-height:1.6}
+
+/* ── BOTTOM TABS ── */
+.bottom-tabs{
+  height:calc(var(--tab-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
+  background:var(--paper);border-top:2px solid var(--border);
+  display:flex;align-items:stretch;flex-shrink:0;
+  position:relative;z-index:100;
+}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;padding:8px 4px;transition:background .12s;font-family:'Noto Sans JP',sans-serif}
+.btab:active{background:var(--sakura-light)}
+.btab.active{background:var(--sakura-light)}
+.btab-icon{font-size:20px;line-height:1}
+.btab-label{font-size:9px;font-weight:700;color:var(--ink-soft);letter-spacing:.02em}
+.btab.active .btab-label{color:var(--sakura-dark)}
+.btab-badge{min-width:18px;height:18px;background:var(--sakura-dark);border-radius:20px;font-size:10px;font-weight:700;color:white;display:flex;align-items:center;justify-content:center;padding:0 4px;margin-top:-2px}
+
+/* ── DRAWER (nav) ── */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(42,31,26,.4);z-index:500;display:none;backdrop-filter:blur(2px)}
+.drawer-backdrop.open{display:block}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:280px;background:var(--paper);z-index:501;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .25s ease;overflow:hidden}
+.drawer.open{transform:translateX(0)}
+.drawer-header{padding:16px;background:var(--sakura);position:relative;overflow:hidden;flex-shrink:0}
+.drawer-header::after{content:'🌸';position:absolute;right:-8px;top:-8px;font-size:48px;opacity:.15;animation:spin-slow 18s linear infinite}
+.drawer-title{font-family:'Zen Maru Gothic',sans-serif;font-size:17px;font-weight:700;color:var(--indigo)}
+.drawer-sub{font-size:10px;color:var(--sakura-dark);margin-top:2px;letter-spacing:.08em}
+.drawer-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.meta-pill{font-size:10px;font-weight:500;background:rgba(255,255,255,.55);color:var(--indigo);border-radius:20px;padding:2px 8px;border:1px solid rgba(255,255,255,.4)}
+.drawer-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.5);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:1}
+.drawer-nav{flex:1;overflow-y:auto;padding:8px 8px 20px}
+.drawer-nav::-webkit-scrollbar{display:none}
+.nav-section-label{font-size:9px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;padding:10px 10px 3px;display:flex;align-items:center;gap:5px}
+.nav-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;margin-bottom:1px;transition:background .12s}
+.nav-item:active{background:var(--sakura-light)}
+.nav-item.active{background:var(--sakura-light);border:1.5px solid var(--sakura)}
+.nav-emoji{font-size:15px;flex-shrink:0}
+.nav-num{font-size:10px;color:var(--ink-faint);min-width:18px;font-weight:500}
+.nav-label{font-size:13px;color:var(--ink);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.nav-count{font-size:10px;font-weight:700;background:var(--sakura);color:var(--indigo);border-radius:20px;padding:1px 6px;min-width:20px;text-align:center}
+
+/* ── MODAL ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(42,31,26,.45);z-index:600;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal-sheet{background:white;border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-height:90vh;overflow-y:auto;animation:slide-up .25s ease;padding-bottom:calc(20px + var(--safe-bottom))}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 16px}
+.modal-title{font-family:'Zen Maru Gothic',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+.field label{font-size:11px;font-weight:700;color:var(--ink-soft)}
+.field input,.field textarea{font-size:14px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--cream);color:var(--ink);font-family:'Noto Sans JP',sans-serif;width:100%;outline:none;-webkit-appearance:none}
+.field input:focus,.field textarea:focus{border-color:var(--sakura-dark)}
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px}
+.type-option{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;background:var(--cream)}
+.type-option:active{border-color:var(--sakura)}
+.type-option.selected{border-color:var(--sakura-dark);background:var(--sakura-light)}
+.type-option .te{font-size:22px}
+.type-option .tl{font-size:10px;font-weight:600;color:var(--ink-soft)}
+.modal-btns{display:flex;gap:8px;margin-top:14px}
+.btn-ghost{flex:1;padding:12px;font-size:13px;font-weight:600;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans JP',sans-serif}
+.btn-primary{flex:2;padding:12px;font-size:14px;font-weight:700;background:var(--sakura-dark);border:none;border-radius:var(--r-sm);cursor:pointer;color:white;font-family:'Noto Sans JP',sans-serif}
+.btn-primary:active{transform:scale(.97)}
+
+/* ── STATS BAR ── */
+.stats-bar{display:flex;background:var(--paper);border-bottom:2px solid var(--border);flex-shrink:0}
+.stat-cell{flex:1;padding:8px 4px;text-align:center;border-right:1px solid var(--border)}
+.stat-cell:last-child{border-right:none}
+.stat-emoji{font-size:14px}
+.stat-val{font-size:14px;font-weight:700;color:var(--ink);font-family:'Zen Maru Gothic',sans-serif}
+.stat-key{font-size:9px;color:var(--ink-soft);font-weight:500}
+
+/* ── BUDGET SCREEN ── */
+.budget-summary{background:var(--gold-light);border:1.5px solid var(--gold);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.budget-total-label{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+.budget-total-val{font-family:'Zen Maru Gothic',sans-serif;font-size:26px;font-weight:700;color:var(--ink);margin:2px 0}
+.budget-total-sub{font-size:11px;color:var(--ink-soft)}
+.budget-bar-wrap{background:rgba(201,146,42,.15);border-radius:20px;height:8px;margin-top:10px;overflow:hidden}
+.budget-bar-fill{height:100%;border-radius:20px;background:var(--gold);transition:width .5s ease}
+.bcat-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);margin-bottom:6px}
+.bcat-emoji{font-size:15px;flex-shrink:0}
+.bcat-info{flex:1;min-width:0}
+.bcat-name{font-size:12px;font-weight:600;color:var(--ink)}
+.bcat-mini-bar{height:4px;background:#f0e8e0;border-radius:20px;margin-top:3px}
+.bcat-mini-fill{height:100%;border-radius:20px;transition:width .4s}
+.bcat-amt{font-size:13px;font-weight:700;color:var(--ink);flex-shrink:0}
+.bcat-del{background:none;border:none;cursor:pointer;font-size:14px;opacity:.25;padding:2px}
+.bcat-del:active{opacity:1}
+.budget-add-form{background:var(--paper);border:1.5px dashed var(--border);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.budget-add-title{font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:8px}
+.b-row{display:flex;gap:6px;margin-bottom:6px}
+.b-inp{flex:1;font-size:13px;padding:9px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:white;color:var(--ink);font-family:'Noto Sans JP',sans-serif;outline:none;-webkit-appearance:none}
+.b-inp:focus{border-color:var(--gold)}
+.b-select{flex:1;font-size:13px;padding:9px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:white;color:var(--ink);font-family:'Noto Sans JP',sans-serif;outline:none}
+.b-add-btn{padding:9px 14px;background:var(--gold);border:none;border-radius:var(--r-sm);cursor:pointer;font-size:13px;font-weight:700;color:white;font-family:'Noto Sans JP',sans-serif;white-space:nowrap}
+
+/* ── PACKING SCREEN ── */
+.pack-summary{background:var(--sakura-light);border:1.5px solid var(--sakura);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.pack-sum-emoji{font-size:28px;animation:float 3s ease-in-out infinite}
+.pack-pct{font-family:'Zen Maru Gothic',sans-serif;font-size:24px;font-weight:700;color:var(--sakura-dark)}
+.pack-str{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.pack-bar-wrap{flex:1;height:8px;background:rgba(232,115,154,.2);border-radius:20px;overflow:hidden}
+.pack-bar-fill{height:100%;background:var(--sakura-dark);border-radius:20px;transition:width .5s}
+.pack-cat-block{background:white;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:8px}
+.pack-cat-hd{display:flex;align-items:center;gap:8px;padding:12px 12px;cursor:pointer}
+.pack-cat-hd:active{background:var(--sakura-light)}
+.pack-cat-em{font-size:16px}
+.pack-cat-name{font-size:13px;font-weight:700;color:var(--ink);flex:1}
+.pack-cat-prog{font-size:11px;color:var(--ink-faint);font-weight:500}
+.pack-cat-arrow{font-size:12px;color:var(--ink-faint);transition:transform .2s}
+.pack-cat-arrow.open{transform:rotate(90deg)}
+.pack-items{border-top:1px solid var(--border);padding:6px 10px}
+.pack-item{display:flex;align-items:center;gap:10px;padding:9px 6px;border-radius:8px}
+.pack-item:active{background:var(--sakura-light)}
+.pack-cb{width:18px;height:18px;accent-color:var(--sakura-dark);cursor:pointer;flex-shrink:0}
+.pack-item-label{font-size:13px;color:var(--ink);flex:1;cursor:pointer;line-height:1.4}
+.pack-item-label.done{color:var(--ink-faint);text-decoration:line-through}
+.pack-item-del{background:none;border:none;cursor:pointer;font-size:14px;opacity:.2;padding:4px}
+.pack-item-del:active{opacity:1}
+.pack-add-row{display:flex;gap:6px;padding:8px 8px 6px;border-top:1px solid var(--border)}
+.pack-add-inp{flex:1;font-size:13px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);color:var(--ink);font-family:'Noto Sans JP',sans-serif;outline:none;-webkit-appearance:none}
+.pack-add-inp:focus{border-color:var(--sakura-dark)}
+.pack-add-btn{padding:8px 13px;background:var(--sakura-dark);border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;color:white;font-family:'Noto Sans JP',sans-serif}
+
+/* ── NOTES SCREEN ── */
+.note-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 13px;margin-bottom:8px;animation:fade-up .2s ease}
+.note-card:hover{border-color:var(--sakura)}
+.note-card-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.note-emoji-pick{font-size:20px;cursor:pointer}
+.note-title-inp{flex:1;font-size:14px;font-weight:700;border:none;background:transparent;color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;outline:none;-webkit-appearance:none}
+.note-title-inp::placeholder{color:var(--ink-faint)}
+.note-date{font-size:10px;color:var(--ink-faint);flex-shrink:0}
+.note-del{background:none;border:none;cursor:pointer;font-size:15px;opacity:.25;padding:2px}
+.note-del:active{opacity:1}
+.note-body-inp{width:100%;font-size:13px;border:none;background:transparent;color:var(--ink-soft);font-family:'Noto Sans JP',sans-serif;outline:none;resize:none;line-height:1.6;min-height:60px;-webkit-appearance:none}
+.note-body-inp::placeholder{color:var(--ink-faint)}
+.note-add-btn{width:100%;padding:13px;background:transparent;border:2px dashed var(--border);border-radius:var(--r);font-size:13px;color:var(--ink-soft);cursor:pointer;text-align:center;font-weight:600;font-family:'Noto Sans JP',sans-serif;margin-top:4px}
+.note-add-btn:active{background:var(--sakura-light);border-color:var(--sakura)}
+
+.screen-section-title{font-size:10px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.screen-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.info-pill{background:var(--indigo-light);border:1.5px solid var(--indigo);border-radius:var(--r-sm);padding:8px 10px;font-size:11px;color:var(--indigo);margin-top:8px}
+
+/* ── WELCOME SCREEN ── */
+.welcome-overlay{position:fixed;inset:0;background:var(--sakura);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:0;overflow:hidden}
+.welcome-overlay.hidden{display:none!important}
+.welcome-logo{font-size:56px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
+.welcome-title{font-family:'Zen Maru Gothic',sans-serif;font-size:24px;font-weight:700;color:var(--indigo);text-align:center}
+.welcome-sub{font-size:13px;color:var(--sakura-dark);margin-top:4px;margin-bottom:28px;text-align:center;letter-spacing:.06em}
+.welcome-card{background:white;border-radius:20px;padding:22px 20px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(232,115,154,.2);overflow:hidden}
+.welcome-label{font-size:11px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.welcome-name-row{display:flex;gap:8px;margin-bottom:14px;min-width:0}
+.welcome-emoji-btn{font-size:28px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;width:52px;height:52px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.welcome-name-inp{flex:1;min-width:0;font-size:16px;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--cream);color:var(--ink);font-family:'Noto Sans JP',sans-serif;outline:none;-webkit-appearance:none;width:100%}
+.welcome-name-inp:focus{border-color:var(--sakura-dark)}
+.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.emoji-opt{font-size:22px;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.emoji-opt:active{transform:scale(.9)}
+.emoji-opt.selected{border-color:var(--sakura-dark);background:var(--sakura-light)}
+.welcome-enter-btn{width:100%;padding:14px;background:var(--sakura-dark);border:none;border-radius:12px;font-size:15px;font-weight:700;color:white;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:4px}
+.welcome-enter-btn:active{transform:scale(.97)}
+
+/* ── USER AVATAR (header) ── */
+.user-avatar{width:30px;height:30px;border-radius:50%;background:white;border:2px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0}
+
+/* ── ACTIVITY CARD SOCIAL ── */
+.act-social{display:flex;align-items:center;gap:8px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border)}
+.act-author{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-faint);flex:1}
+.act-author-avatar{font-size:13px}
+.act-author-name{font-weight:600;color:var(--ink-soft)}
+.act-interested{display:flex;align-items:center;gap:4px}
+.act-avatars{display:flex;gap:2px}
+.act-avatar-chip{font-size:14px;line-height:1}
+.join-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .12s;white-space:nowrap}
+.join-btn:active{transform:scale(.94)}
+.join-btn.joined{background:var(--matcha-light);color:var(--matcha);border-color:var(--matcha)}
+.join-btn.not-joined{background:var(--sakura-light);color:var(--sakura-dark);border-color:var(--sakura)}
+
+/* ── TRAVELERS SCREEN ── */
+.travelers-header{background:var(--sakura-light);border:1.5px solid var(--sakura);border-radius:var(--r);padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.travelers-header-emoji{font-size:36px;animation:float 3s ease-in-out infinite}
+.travelers-count{font-family:'Zen Maru Gothic',sans-serif;font-size:26px;font-weight:700;color:var(--sakura-dark)}
+.travelers-sub{font-size:11px;color:var(--ink-soft);margin-top:2px}
+
+.traveler-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;animation:fade-up .2s ease}
+.traveler-card.editing{border-color:var(--sakura-dark);background:var(--sakura-light)}
+.traveler-card-top{display:flex;align-items:center;gap:12px}
+.traveler-big-emoji{font-size:38px;line-height:1;cursor:pointer;flex-shrink:0;transition:transform .15s}
+.traveler-big-emoji:active{transform:scale(.88)}
+.traveler-info{flex:1;min-width:0}
+.traveler-name{font-family:'Zen Maru Gothic',sans-serif;font-size:16px;font-weight:700;color:var(--ink)}
+.traveler-role{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.traveler-acts{font-size:10px;color:var(--ink-faint);margin-top:3px}
+.traveler-actions{display:flex;gap:6px;flex-shrink:0}
+.trav-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:600;color:var(--ink-soft);transition:all .12s}
+.trav-btn:active{transform:scale(.9)}
+.trav-btn.edit{background:var(--indigo-light);border-color:var(--indigo);color:var(--indigo)}
+.trav-btn.del{background:#fff0f3;border-color:#e8739a;color:#e8739a}
+
+.traveler-edit-form{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.trav-field{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.trav-field label{font-size:11px;font-weight:700;color:var(--ink-soft)}
+.trav-field input{font-size:14px;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--cream);color:var(--ink);font-family:'Noto Sans JP',sans-serif;outline:none;-webkit-appearance:none}
+.trav-field input:focus{border-color:var(--sakura-dark)}
+.trav-emoji-picker{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.trav-emoji-opt{font-size:20px;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.trav-emoji-opt:active{transform:scale(.88)}
+.trav-emoji-opt.selected{border-color:var(--sakura-dark);background:var(--sakura-light)}
+.trav-save-btn{width:100%;padding:11px;background:var(--sakura-dark);border:none;border-radius:var(--r-sm);font-size:13px;font-weight:700;color:white;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:4px}
+.trav-save-btn:active{transform:scale(.97)}
+
+.trav-add-card{background:transparent;border:2px dashed var(--sakura);border-radius:var(--r);padding:14px;margin-bottom:8px}
+.trav-add-title{font-size:13px;font-weight:700;color:var(--sakura-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+.traveler-stats{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.trav-stat{background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;flex:1;min-width:80px;text-align:center}
+.trav-stat-val{font-family:'Zen Maru Gothic',sans-serif;font-size:17px;font-weight:700;color:var(--ink)}
+.trav-stat-key{font-size:9px;color:var(--ink-soft);font-weight:500;margin-top:2px}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="sakura-container" id="sakuraContainer"></div>
+
+<!-- WELCOME SCREEN -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-logo">🌸</div>
+  <div class="welcome-title">Japón 2026</div>
+  <div class="welcome-sub">日本旅行 — ¿Quién eres?</div>
+  <div class="welcome-card">
+    <div class="welcome-label">Elige tu emoji</div>
+    <div class="emoji-picker" id="emojiPicker"></div>
+    <div class="welcome-label">Tu nombre</div>
+    <div class="welcome-name-row">
+      <div class="welcome-emoji-btn" id="selectedEmojiPreview">🌸</div>
+      <input class="welcome-name-inp" id="welcomeNameInp" type="text" placeholder="ej. África, Nacho..." maxlength="20" onkeydown="if(event.key==='Enter')enterApp()">
+    </div>
+    <button class="welcome-enter-btn" onclick="enterApp()">¡Entrar al viaje! 🚀</button>
+    <div id="travelerShortcuts" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <button class="menu-btn" onclick="openDrawer()">☰</button>
+    <div class="header-title">
+      🌸 Japón 2026
+      <small>日本旅行 · 10–28 sep</small>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="hdr-btn" onclick="toggleWeather()">🌤️</button>
+    <div class="user-avatar" id="headerAvatar" onclick="changeUser()" title="Cambiar usuario">🌸</div>
+    <button class="hdr-btn" onclick="openModal()" style="background:var(--sakura-dark);color:white;border-color:var(--sakura-dark)">✨ Añadir</button>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-cell"><div class="stat-emoji">⭐</div><div class="stat-val" id="sAct">0</div><div class="stat-key">actividades</div></div>
+  <div class="stat-cell"><div class="stat-emoji">💴</div><div class="stat-val" id="sBudget">—</div><div class="stat-key">gastado</div></div>
+  <div class="stat-cell"><div class="stat-emoji">👥</div><div class="stat-val" id="sTravelers">6</div><div class="stat-key">viajeros</div></div>
+  <div class="stat-cell" onclick="celebrar()" style="cursor:pointer"><div class="stat-emoji" style="animation:float 2s ease-in-out infinite">🎉</div><div class="stat-val" style="font-size:10px;margin-top:1px">kampai</div><div class="stat-key">乾杯</div></div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-chip active" id="filterAll" onclick="setFilter('all',this)">
+    <span class="filter-chip-emoji">📅</span> Todos
+  </button>
+  <button class="filter-chip" id="filterMine" onclick="setFilter('mine',this)">
+    <span class="filter-chip-emoji" id="filterMineEmoji">👤</span> Mis planes
+  </button>
+  <button class="filter-chip" id="filterJoined" onclick="setFilter('joined',this)">
+    <span class="filter-chip-emoji">✅</span> Me apunto
+  </button>
+</div>
+
+<!-- SCREENS -->
+<div class="screens">
+  <div class="screen active" id="screen-itinerary"></div>
+  <div class="screen" id="screen-budget"></div>
+  <div class="screen" id="screen-packing"></div>
+  <div class="screen" id="screen-notes"></div>
+  <div class="screen" id="screen-travelers"></div>
+</div>
+
+<!-- BOTTOM TABS -->
+<div class="bottom-tabs">
+  <button class="btab active" onclick="switchScreen('itinerary',this)">
+    <span class="btab-icon">📅</span>
+    <span class="btab-label">Itinerario</span>
+  </button>
+  <button class="btab" onclick="switchScreen('budget',this)">
+    <span class="btab-icon">💴</span>
+    <span class="btab-label">Budget</span>
+  </button>
+  <button class="btab" onclick="switchScreen('packing',this)">
+    <span class="btab-icon">🧳</span>
+    <span class="btab-label">Maleta</span>
+  </button>
+  <button class="btab" onclick="switchScreen('travelers',this)">
+    <span class="btab-icon">👥</span>
+    <span class="btab-label">Viajeros</span>
+  </button>
+  <button class="btab" onclick="switchScreen('notes',this)">
+    <span class="btab-icon">📝</span>
+    <span class="btab-label">Notas</span>
+  </button>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div class="drawer-title">🌸 Japón 2026</div>
+    <div class="drawer-meta">
+      <span class="meta-pill">📅 10–28 sep</span>
+      <span class="meta-pill" id="drawerTravPill">👥 6 personas</span>
+      <span class="meta-pill">✈️ Air China</span>
+    </div>
+  </div>
+  <div class="drawer-nav" id="drawerNav"></div>
+</div>
+
+<!-- ADD MODAL (bottom sheet) -->
+<div class="modal-backdrop hidden" id="modalWrap">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✨ Nueva actividad</div>
+    <div class="field">
+      <label>¿Qué tipo de actividad?</label>
+      <div class="type-grid" id="typeGrid"></div>
+    </div>
+    <div class="field"><label>⏰ Hora (opcional)</label><input id="fTime" type="text" placeholder="ej. 10:00" inputmode="numeric"></div>
+    <div class="field"><label>📝 Nombre</label><input id="fName" type="text" placeholder="ej. Templo Senso-ji 🛕"></div>
+    <div class="field"><label>💬 Notas</label><textarea id="fNote" rows="2" placeholder="Reserva, precio, enlace..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveAct()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── SAKURA ── */
+function spawnPetals(n=6){
+  const c=document.getElementById('sakuraContainer');
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');p.className='petal';
+    p.textContent=['🌸','🌺','🍃','🌼'][Math.floor(Math.random()*4)];
+    p.style.left=Math.random()*100+'vw';
+    p.style.fontSize=(10+Math.random()*12)+'px';
+    p.style.animationDuration=(4+Math.random()*5)+'s';
+    p.style.animationDelay=(Math.random()*2)+'s';
+    p.style.opacity='0';
+    c.appendChild(p);setTimeout(()=>p.remove(),9000);
+  }
+}
+spawnPetals(10);setInterval(()=>spawnPetals(2),5000);
+
+function celebrar(){
+  const em=['🎊','🎉','🌸','🍜','🗾','🏯','🦊','🎋','🍡','⛩️'];
+  const c=document.getElementById('sakuraContainer');
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');p.className='petal';
+    p.textContent=em[Math.floor(Math.random()*em.length)];
+    p.style.left=Math.random()*100+'vw';p.style.fontSize=(14+Math.random()*12)+'px';
+    p.style.animationDuration=(2+Math.random()*3)+'s';p.style.animationDelay=(Math.random()*1)+'s';
+    p.style.opacity='0';c.appendChild(p);setTimeout(()=>p.remove(),5000);
+  }
+}
+
+/* ── USER IDENTITY ── */
+const USER_EMOJIS=['🌸','🦊','🐉','⛩️','🍜','🎋','🌺','🎌','🏯','🗼','🌊','🎎'];
+let currentUser = null; // {name, emoji}
+
+function initWelcome(){
+  // Build emoji picker
+  const picker = document.getElementById('emojiPicker');
+  USER_EMOJIS.forEach((em,i)=>{
+    const btn = document.createElement('button');
+    btn.className='emoji-opt'+(i===0?' selected':'');
+    btn.textContent=em;
+    btn.onclick=()=>{
+      document.querySelectorAll('.emoji-opt').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('selectedEmojiPreview').textContent=em;
+    };
+    picker.appendChild(btn);
+  });
+
+  // Traveler shortcuts
+  const sc = document.getElementById('travelerShortcuts');
+  if(sc && travelers.length>0){
+    sc.innerHTML=`<div style="font-size:11px;color:rgba(45,58,140,.7);font-weight:700;text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">¿Eres del grupo?</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+    ${travelers.map(t=>`<button onclick="quickEnter('${escH(t.name)}','${t.emoji}')" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:rgba(255,255,255,.6);border:1.5px solid rgba(255,255,255,.5);border-radius:20px;font-size:13px;font-weight:600;color:var(--indigo);cursor:pointer;font-family:Noto Sans JP,sans-serif">${t.emoji} ${escH(t.name)}</button>`).join('')}
+    </div>`;
+  }
+
+  // Check if already has identity saved
+  try{
+    const saved=JSON.parse(localStorage.getItem('japan2026_user')||'null');
+    if(saved&&saved.name){
+      currentUser=saved;
+      document.getElementById('welcomeOverlay').classList.add('hidden');
+      document.getElementById('headerAvatar').textContent=saved.emoji;
+      updateFilterBar();
+    }
+  }catch(e){}
+}
+
+function enterApp(){
+  const name=document.getElementById('welcomeNameInp').value.trim();
+  if(!name){document.getElementById('welcomeNameInp').focus();return;}
+  const emoji=document.querySelector('.emoji-opt.selected')?.textContent||'🌸';
+  currentUser={name,emoji};
+  try{localStorage.setItem('japan2026_user',JSON.stringify(currentUser));}catch(e){}
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  document.getElementById('headerAvatar').textContent=emoji;
+  updateFilterBar();
+  spawnPetals(15);
+}
+
+function quickEnter(name, emoji){
+  currentUser={name, emoji};
+  try{localStorage.setItem('japan2026_user',JSON.stringify(currentUser));}catch(e){}
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  document.getElementById('headerAvatar').textContent=emoji;
+  updateFilterBar();
+  spawnPetals(12);
+}
+
+function changeUser(){
+  if(confirm(`¿Cambiar de usuario? (Actualmente: ${currentUser?.emoji} ${currentUser?.name})`)){
+    currentUser=null;
+    try{localStorage.removeItem('japan2026_user');}catch(e){}
+    document.getElementById('welcomeOverlay').classList.remove('hidden');
+    document.getElementById('welcomeNameInp').value='';
+  }
+}
+
+/* ── VOTING ── */
+function toggleJoin(dayId, actId){
+  if(!currentUser){alert('Primero elige tu nombre 👆');return;}
+  const day=DAYS[dayId];
+  const act=day?.acts.find(a=>a.id===actId);
+  if(!act)return;
+  if(!act.interested)act.interested=[];
+  const idx=act.interested.findIndex(u=>u.name===currentUser.name);
+  if(idx>=0){
+    act.interested.splice(idx,1);
+  } else {
+    act.interested.push({name:currentUser.name,emoji:currentUser.emoji});
+    spawnPetals(3);
+  }
+  save();renderItinerary();
+}
+let currentScreen='itinerary';
+function switchScreen(name,btn){
+  currentScreen=name;
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  if(name==='budget')renderBudget();
+  if(name==='packing')renderPacking();
+  if(name==='notes')renderNotes();
+  if(name==='travelers')renderTravelers();
+}
+
+/* ── FILTERS ── */
+let activeFilter='all';
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active','active-mine','active-joined'));
+  if(f==='all')    btn.classList.add('active');
+  if(f==='mine')   btn.classList.add('active-mine');
+  if(f==='joined') btn.classList.add('active-joined');
+  renderItinerary();
+}
+function updateFilterBar(){
+  const chip=document.getElementById('filterMineEmoji');
+  if(chip&&currentUser)chip.textContent=currentUser.emoji;
+}
+function filterActs(acts){
+  if(activeFilter==='all')return acts;
+  if(activeFilter==='mine'){
+    if(!currentUser)return acts;
+    return acts.filter(a=>a.author&&a.author.name===currentUser.name);
+  }
+  if(activeFilter==='joined'){
+    if(!currentUser)return acts;
+    return acts.filter(a=>(a.interested||[]).some(u=>u.name===currentUser.name));
+  }
+  return acts;
+}
+
+/* ── DRAWER ── */
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerBackdrop').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerBackdrop').classList.remove('open');
+}
+
+/* ── TRIP DATA ── */
+const CITY={
+  tokyo:{label:'Tokio',emoji:'🗼',color:'#2D3A8C',bg:'#EEF0FC',tc:'#1a2460'},
+  kyoto:{label:'Kioto',emoji:'⛩️',color:'#5B8A5B',bg:'#E8F3E8',tc:'#2d4a2d'},
+  osaka:{label:'Osaka',emoji:'🏯',color:'#B05A2A',bg:'#FAECE7',tc:'#6b3218'},
+  vuelo:{label:'Vuelo',emoji:'✈️',color:'#2D3A8C',bg:'#EEF0FC',tc:'#1a2460'},
+};
+const TYPE_META={
+  vuelo:{label:'vuelo',emoji:'✈️',bg:'#EEF0FC',color:'#1a2460'},
+  hotel:{label:'hotel',emoji:'🏨',bg:'#E8F3E8',color:'#2d4a2d'},
+  visita:{label:'visita',emoji:'🛕',bg:'#FFF0F3',color:'#8A2A4A'},
+  comida:{label:'comida',emoji:'🍜',bg:'#FFF5E0',color:'#7A4A00'},
+  transporte:{label:'transporte',emoji:'🚄',bg:'#F1EFE8',color:'#3A3528'},
+  libre:{label:'libre',emoji:'🎌',bg:'#F5F0FF',color:'#4A3A8A'},
+};
+const TYPE_ORDER=['vuelo','transporte','hotel','visita','comida','libre'];
+const SECTION_LABELS={vuelo:'✈️ Vuelos',transporte:'🚄 Transporte',hotel:'🏨 Alojamiento',visita:'🛕 Visitas',comida:'🍜 Gastronomía',libre:'🎌 Tiempo libre'};
+const FLIGHTS={
+  outbound:{nums:'CA578 · CA929',date:'10 sep 2026',segs:[{from:'BCN',fromC:'Barcelona 🇪🇸',dep:'12:40',to:'PVG',toC:'Shanghái 🇨🇳',arr:'06:50+1',dur:'~11h'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'~09:30',to:'NRT',toC:'Tokio 🇯🇵',arr:'~13:30',dur:'~3h'}],note:'🔄 Escala en Shanghái Pudong · Llegada a Tokio Narita el 11/09'},
+  return:{nums:'CA927 · CA839',date:'27–28 sep 2026',segs:[{from:'KIX',fromC:'Osaka 🇯🇵',dep:'~18:00',to:'PVG',toC:'Shanghái 🇨🇳',arr:'~20:00',dur:'~2h 20m'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'00:45',to:'BCN',toC:'Barcelona 🇪🇸',arr:'08:05',dur:'~13h'}],note:'🔄 Escala en Shanghái · Llegada BCN 28/09 a las 08:05h'},
+};
+const WEATHER_BY_CITY={
+  tokyo:{icon:'⛅',temp:'26°C',desc:'Nublado parcial · septiembre agradable',tags:['💧 Humedad 65%','🌬️ Brisa suave','☂️ Lleva paraguas']},
+  kyoto:{icon:'🌤️',temp:'27°C',desc:'Soleado y cálido · ideal para templos',tags:['🌿 Momiji','🌡️ Noches frescas']},
+  osaka:{icon:'🌈',temp:'28°C',desc:'Cálido y despejado · perfecto para comer',tags:['🌶️ Mucho calor','🎉 Ambiente festivo']},
+  vuelo:{icon:'🌍',temp:'—',desc:'Viaje en avión · ¡que empiece la aventura!',tags:['💺 En el avión','🍱 Bento box']},
+};
+function dateStr(n){const d=new Date(2026,8,10+n);return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}
+const rMap=['vuelo','tokyo','tokyo','tokyo','tokyo','tokyo','tokyo','tokyo','kyoto','kyoto','kyoto','kyoto','kyoto','osaka','osaka','osaka','osaka','vuelo'];
+const DAYS=Array.from({length:18},(_,i)=>({id:i,num:i+1,date:dateStr(i),city:rMap[i],flight:i===0?'outbound':i===17?'return':null,acts:[]}));
+const DA={
+  1:[{t:'transporte',h:'13:30',n:'Llegada Tokio Narita (NRT) 🛬',d:'Narita Express → Shinjuku · ~1h · ~30€/persona'},{t:'hotel',h:'16:00',n:'Check-in hotel Tokio 🏨',d:'Recomendación: Shinjuku, Asakusa o Shibuya'},{t:'libre',h:'19:00',n:'Primera cena y paseo 🍜',d:'Jet lag: acostarse a la hora local'}],
+  2:[{t:'visita',h:'08:00',n:'Templo Senso-ji · Asakusa 🛕',d:'Llegar antes de las 8h para evitar multitudes'},{t:'visita',h:'10:30',n:'Nakamise-dori · tiendas tradicionales 🪭'},{t:'comida',h:'13:00',n:'Ramen en Fuunji · Shinjuku 🍜',d:'Cola habitual, llegar antes de abrir'},{t:'visita',h:'15:00',n:'Shibuya Crossing + Scramble Square 🚦'},{t:'visita',h:'18:00',n:'Harajuku · Takeshita Street 🎀'}],
+  3:[{t:'visita',h:'09:00',n:'Palacio Imperial + jardines del Este 🏯',d:'Entrada gratuita · reserva online'},{t:'comida',h:'12:30',n:'Almuerzo en Ginza 🍱',d:'Sushi a precio razonable en almuerzo'},{t:'visita',h:'14:30',n:'Akihabara · electrónica y cultura pop 🎮'},{t:'visita',h:'18:00',n:'Ueno · Parque y museos 🌳'}],
+  4:[{t:'visita',h:'09:00',n:'Shinjuku Gyoen · jardín nacional 🌺',d:'500 JPY · prohibido el alcohol'},{t:'visita',h:'12:00',n:'Odaiba · TeamLab Borderless 🌊✨',d:'Reserva anticipada · ~3.200 JPY'},{t:'comida',h:'15:00',n:'Mercado de Toyosu · sushi 🐟'},{t:'visita',h:'18:00',n:'Shiodome · vistas nocturnas 🌃'}],
+  5:[{t:'transporte',h:'08:00',n:'Excursión a Nikko 🚄',d:'2h desde Asakusa · Tobu Nikko Line'},{t:'visita',h:'10:30',n:'Tosho-gu Shrine · Nikko ⛩️',d:'Patrimonio UNESCO · 1.300 JPY'},{t:'visita',h:'13:00',n:'Cataratas Kegon + lago Chuzenji 💦'},{t:'transporte',h:'17:00',n:'Vuelta a Tokio 🚄'}],
+  6:[{t:'visita',h:'09:00',n:'Yanaka · barrio histórico 🏘️'},{t:'comida',h:'12:00',n:'Depachika · sótanos gastronómicos 🍡',d:'Isetan Shinjuku o Takashimaya'},{t:'visita',h:'15:00',n:'Roppongi Hills · Mori Art Museum 🎨',d:'~1.800 JPY'},{t:'libre',h:'19:00',n:'Noche libre en Tokio 🌃',d:'Izakaya 🍺, Karaoke 🎤...'}],
+  7:[{t:'libre',h:'09:00',n:'Mañana libre · compras en Tokio 🛍️'},{t:'transporte',h:'14:00',n:'Tokio → Kioto (Shinkansen) 🚄💨',d:'Nozomi ~2h 20min · ~130€/persona'},{t:'hotel',h:'17:00',n:'Check-in Kioto 🏮'}],
+  8:[{t:'visita',h:'07:00',n:'Fushimi Inari Taisha ⛩️🦊',d:'Al amanecer · gratuito · subida ~2h'},{t:'comida',h:'12:00',n:'Nishiki Market · mercado cubierto 🥢'},{t:'visita',h:'15:00',n:'Paseo por Gion · barrio de geishas 👘'},{t:'comida',h:'19:00',n:'Cena en Pontocho · callejón gastronómico 🏮'}],
+  9:[{t:'visita',h:'08:00',n:'Arashiyama · Bamboo Grove 🎋',d:'Ir temprano para evitar multitudes'},{t:'visita',h:'09:30',n:'Templo Tenryu-ji + jardín zen 🪷',d:'UNESCO · 500 JPY'},{t:'comida',h:'12:30',n:'Almuerzo tofu kaiseki 🍵'},{t:'visita',h:'15:00',n:'Kinkaku-ji · Pabellón Dorado 🥇',d:'400 JPY · ir a media tarde'}],
+  10:[{t:'visita',h:'09:00',n:'Nijo Castle 🏯',d:'600 JPY · suelos "ruiseñor"'},{t:'visita',h:'11:30',n:'Kyoto Imperial Palace 👑',d:'Visita guiada gratuita · reserva online'},{t:'visita',h:'15:00',n:'Higashiyama · Sannen-zaka 🏮'}],
+  11:[{t:'transporte',h:'09:30',n:'Excursión a Nara 🦌',d:'45 min · JR Nara Line'},{t:'visita',h:'11:00',n:'Parque de los ciervos de Nara 🦌🦌'},{t:'visita',h:'12:30',n:'Todai-ji · Gran Buda 🪔',d:'600 JPY'},{t:'visita',h:'14:30',n:'Kasuga Taisha Shrine ⛩️'},{t:'transporte',h:'17:00',n:'Nara → Osaka 🚄'},{t:'hotel',h:'18:30',n:'Check-in Osaka 🏙️'}],
+  12:[{t:'visita',h:'10:00',n:'Castillo de Osaka 🏯',d:'600 JPY · vistas panorámicas'},{t:'comida',h:'13:00',n:'Takoyaki en Dotonbori 🐙'},{t:'visita',h:'15:00',n:'Dotonbori · paseo por el canal 🌉'},{t:'visita',h:'17:00',n:'Shinsekai · barrio retro 🎪'}],
+  13:[{t:'transporte',h:'08:30',n:'Osaka → Hiroshima 🚄',d:'1h 20min · JR Pass'},{t:'visita',h:'10:30',n:'Peace Memorial Museum 🕊️',d:'200 JPY'},{t:'visita',h:'14:00',n:'Miyajima · Torii flotante ⛩️🌊'},{t:'transporte',h:'18:30',n:'Vuelta a Osaka 🚄'}],
+  14:[{t:'comida',h:'10:00',n:'Okonomiyaki en Mizuno 🥞'},{t:'visita',h:'12:00',n:'Aquarium Kaiyukan 🦈🐋',d:'2.400 JPY'},{t:'visita',h:'15:00',n:'Tempozan + rueda panorámica 🎡'},{t:'libre',h:'18:00',n:'Noche libre Osaka 🌃🍺'}],
+  15:[{t:'libre',h:'',n:'Día libre en Osaka 🎢',d:'Universal Studios Japan o compras 🛍️'}],
+  16:[{t:'visita',h:'10:00',n:'Sumiyoshi Taisha ⛩️',d:'Santuario más antiguo · gratuito'},{t:'comida',h:'13:00',n:'Última cena especial 🥂',d:'¡Celebración del viaje!'},{t:'hotel',h:'18:00',n:'Check-out · traslado aeropuerto KIX 🛫'}],
+};
+let idSeq=1;
+Object.entries(DA).forEach(([k,arr])=>{DAYS[+k].acts=arr.map(a=>({id:idSeq++,type:a.t,time:a.h||'',name:a.n,note:a.d||''}))});
+
+/* ══════════════════════════════════════════════
+   CONFIGURACIÓN JSONBIN — rellena estos dos campos
+   1. Ve a https://jsonbin.io → Sign Up (gratis)
+   2. Dashboard → API Keys → copia tu Master Key
+   3. Crea un nuevo Bin con {} como contenido → copia el Bin ID
+   ══════════════════════════════════════════════ */
+const JSONBIN_ID  = '69ee1e3836566621a8f302c3';   // ← pega aquí tu Bin ID  (ej: '6642abc123def...')
+const JSONBIN_KEY = '$2a$10$i.Xv3Ljq5oVVvbkRF2BEV.EpZwnX6kla0PO/T2k4uTSoah2lYhO6m';   // ← pega aquí tu API Key (ej: '$2a$10$...')
+
+/* ── SYNC ENGINE ── */
+const LS = 'japan2026_';
+let saveTimer = null;
+let isSaving = false;
+let lastSavedHash = '';
+
+function getState(){
+  return {
+    acts: DAYS.map(d=>d.acts),
+    idSeq,
+    budget, budgetIdSeq,
+    pack: packData.map(c=>({id:c.id,items:c.items,open:c.open})),
+    packIdSeq,
+    notes, noteIdSeq,
+    travelers, travIdSeq,
+  };
+}
+
+function applyState(s){
+  if(!s) return;
+  if(s.acts) s.acts.forEach((a,i)=>{if(DAYS[i]) DAYS[i].acts=a});
+  if(s.idSeq) idSeq=s.idSeq;
+  if(s.budget){budget=s.budget; budgetIdSeq=s.budgetIdSeq||budgetIdSeq;}
+  if(s.pack){s.pack.forEach(saved=>{const c=packData.find(c=>c.id===saved.id);if(c){c.items=saved.items;c.open=saved.open;}});if(s.packIdSeq)packIdSeq=s.packIdSeq;}
+  if(s.notes){notes=s.notes; noteIdSeq=s.noteIdSeq||noteIdSeq;}
+  if(s.travelers){travelers=s.travelers; travIdSeq=s.travIdSeq||travIdSeq;}
+}
+
+/* Guarda en localStorage siempre, y en JSONBin si está configurado */
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    const state = getState();
+    const json  = JSON.stringify(state);
+
+    // 1. Siempre guardar en localStorage (backup local)
+    try{ localStorage.setItem(LS+'state', json); }catch(e){}
+
+    // 2. Si JSONBin está configurado, subir a la nube
+    if(!JSONBIN_ID || !JSONBIN_KEY) return;
+    if(json === lastSavedHash) return; // nada cambió
+    if(isSaving) return;
+    isSaving = true;
+    showSyncBadge('saving');
+    try{
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},
+        body: json
+      });
+      if(r.ok){ lastSavedHash=json; showSyncBadge('ok'); }
+      else     { showSyncBadge('error'); }
+    }catch(e){ showSyncBadge('error'); }
+    finally  { isSaving=false; }
+  }, 800); // debounce — espera 800ms antes de guardar
+}
+
+async function loadSaved(){
+  // Intentar cargar desde JSONBin primero
+  if(JSONBIN_ID && JSONBIN_KEY){
+    try{
+      showSyncBadge('loading');
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`,{
+        headers:{'X-Master-Key':JSONBIN_KEY}
+      });
+      if(r.ok){
+        const data = await r.json();
+        applyState(data.record);
+        lastSavedHash = JSON.stringify(data.record);
+        showSyncBadge('ok');
+        return;
+      }
+    }catch(e){}
+    showSyncBadge('error');
+  }
+  // Fallback: cargar desde localStorage
+  try{
+    const raw = localStorage.getItem(LS+'state');
+    if(raw) applyState(JSON.parse(raw));
+  }catch(e){}
+}
+
+/* ── BADGE DE SINCRONIZACIÓN ── */
+function showSyncBadge(state){
+  let badge = document.getElementById('syncBadge');
+  if(!badge){
+    badge = document.createElement('div');
+    badge.id = 'syncBadge';
+    badge.style.cssText='position:fixed;bottom:calc(var(--tab-h) + var(--safe-bottom) + 8px);right:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:200;transition:opacity .4s;pointer-events:none;font-family:Noto Sans JP,sans-serif';
+    document.body.appendChild(badge);
+  }
+  const cfg = {
+    loading:['☁️ Cargando…','#EEF0FC','#2D3A8C'],
+    saving: ['⏳ Guardando…','#FDF3E3','#C9922A'],
+    ok:     ['✅ Guardado','#E8F3E8','#2d4a2d'],
+    error:  ['⚠️ Sin conexión','#FFF0F3','#8A2A4A'],
+  };
+  const [label,bg,color] = cfg[state]||cfg.ok;
+  badge.textContent = label;
+  badge.style.background = bg;
+  badge.style.color = color;
+  badge.style.border = `1.5px solid ${color}44`;
+  badge.style.opacity = '1';
+  if(state==='ok') setTimeout(()=>{badge.style.opacity='0'},2500);
+}
+
+/* Solo mostrar badge si JSONBin está configurado */
+function maybeBadge(state){ if(JSONBIN_ID && JSONBIN_KEY) showSyncBadge(state); }
+
+let sel=0,showWeather=false,selectedType='visita';
+
+/* ── BUDGET ── */
+const BCOLORS={'vuelos':'#2D3A8C','hoteles':'#5B8A5B','transporte':'#B05A2A','comidas':'#C9922A','visitas':'#E8739A','compras':'#7B5EA7','otros':'#888'};
+const BEMOJIS={'vuelos':'✈️','hoteles':'🏨','transporte':'🚄','comidas':'🍜','visitas':'🛕','compras':'🛍️','otros':'💡'};
+let budget={total:9000,items:[
+  {id:1,cat:'vuelos',name:'Vuelos Air China ×6',amount:2400},
+  {id:2,cat:'hoteles',name:'Hoteles 17 noches ×6',amount:2800},
+  {id:3,cat:'transporte',name:'JR Pass ×6 (14 días)',amount:1560},
+  {id:4,cat:'comidas',name:'Comidas estimadas',amount:900},
+  {id:5,cat:'visitas',name:'Entradas y actividades',amount:480},
+  {id:6,cat:'compras',name:'Presupuesto compras',amount:600},
+]};
+let budgetIdSeq=10;
+function budgetSpent(){return budget.items.reduce((s,i)=>s+i.amount,0)}
+function budgetByCat(){const m={};budget.items.forEach(i=>{if(!m[i.cat])m[i.cat]=0;m[i.cat]+=i.amount});return m}
+
+function renderBudget(){
+  const el=document.getElementById('screen-budget');
+  const spent=budgetSpent();const pct=Math.min(100,Math.round(spent/budget.total*100));
+  const catMap=budgetByCat();const sorted=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  const maxCat=sorted[0]?sorted[0][1]:1;
+  let html=`<div class="budget-summary">
+    <div class="budget-total-label">💴 Presupuesto total</div>
+    <div class="budget-total-val">${spent.toLocaleString('es-ES')}€ <span style="font-size:13px;color:var(--ink-soft)">/ ${budget.total.toLocaleString('es-ES')}€</span></div>
+    <div class="budget-total-sub">${pct}% del presupuesto · ${(budget.total-spent).toLocaleString('es-ES')}€ disponible</div>
+    <div class="budget-bar-wrap"><div class="budget-bar-fill" style="width:${pct}%"></div></div>
+  </div>
+  <div class="screen-section-title">Por categoría</div>`;
+  sorted.forEach(([cat,amt])=>{
+    const pctC=Math.round(amt/maxCat*100);
+    html+=`<div class="bcat-row">
+      <div class="bcat-emoji">${BEMOJIS[cat]||'💡'}</div>
+      <div class="bcat-info">
+        <div class="bcat-name">${cat.charAt(0).toUpperCase()+cat.slice(1)}</div>
+        <div class="bcat-mini-bar"><div class="bcat-mini-fill" style="width:${pctC}%;background:${BCOLORS[cat]||'#888'}"></div></div>
+      </div>
+      <div class="bcat-amt">${amt.toLocaleString('es-ES')}€</div>
+    </div>`;
+  });
+  html+=`<div class="screen-section-title" style="margin-top:12px">Desglose detallado</div>`;
+  budget.items.forEach(item=>{
+    html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);margin-bottom:5px">
+      <span>${BEMOJIS[item.cat]||'💡'}</span>
+      <span style="flex:1;font-size:12px;color:var(--ink)">${item.name}</span>
+      <span style="font-size:12px;font-weight:700;color:${BCOLORS[item.cat]||'#888'}">${item.amount.toLocaleString('es-ES')}€</span>
+      <button class="bcat-del" onclick="delBudgetItem(${item.id})">🗑️</button>
+    </div>`;
+  });
+  html+=`<div class="budget-add-form">
+    <div class="budget-add-title">➕ Añadir gasto</div>
+    <div class="b-row">
+      <select class="b-select" id="bCat">${Object.keys(BCOLORS).map(c=>`<option value="${c}">${BEMOJIS[c]} ${c.charAt(0).toUpperCase()+c.slice(1)}</option>`).join('')}</select>
+      <input class="b-inp" id="bAmt" type="number" inputmode="decimal" placeholder="€" style="max-width:80px">
+    </div>
+    <div class="b-row">
+      <input class="b-inp" id="bName" type="text" placeholder="Descripción...">
+      <button class="b-add-btn" onclick="addBudgetItem()">+ Añadir</button>
+    </div>
+  </div>
+  <div class="info-pill">💡 ~${Math.round(budget.total/6).toLocaleString('es-ES')}€ por persona para todo el viaje</div>`;
+  el.innerHTML=html;
+  document.getElementById('sBudget').textContent=spent.toLocaleString('es-ES')+'€';
+}
+function addBudgetItem(){
+  const cat=document.getElementById('bCat').value;
+  const amt=parseFloat(document.getElementById('bAmt').value);
+  const name=document.getElementById('bName').value.trim();
+  if(!name||isNaN(amt)||amt<=0)return;
+  budget.items.push({id:budgetIdSeq++,cat,name,amount:amt});
+  save();renderBudget();spawnPetals(3);
+}
+function delBudgetItem(id){budget.items=budget.items.filter(i=>i.id!==id);save();renderBudget()}
+
+/* ── PACKING ── */
+let packIdSeq=100;
+const packData=[
+  {id:'doc',name:'Documentos 🗂️',open:true,items:[
+    {id:packIdSeq++,label:'Pasaportes (vigencia +6 meses)',done:false},
+    {id:packIdSeq++,label:'Billetes de avión impresos',done:false},
+    {id:packIdSeq++,label:'Seguro de viaje',done:false},
+    {id:packIdSeq++,label:'JR Pass (validado en aeropuerto)',done:false},
+    {id:packIdSeq++,label:'Tarjetas bancarias / efectivo JPY',done:false},
+    {id:packIdSeq++,label:'Reservas hotel impresas',done:false},
+  ]},
+  {id:'ropa',name:'Ropa y calzado 👗',open:false,items:[
+    {id:packIdSeq++,label:'Ropa cómoda para caminar',done:false},
+    {id:packIdSeq++,label:'Calcetines sin agujeros (¡templos!)',done:false},
+    {id:packIdSeq++,label:'Ropa formal para restaurantes',done:false},
+    {id:packIdSeq++,label:'Paraguas plegable',done:false},
+    {id:packIdSeq++,label:'Zapatillas cómodas',done:false},
+    {id:packIdSeq++,label:'Chubasquero ligero',done:false},
+  ]},
+  {id:'tech',name:'Tecnología 📱',open:false,items:[
+    {id:packIdSeq++,label:'Cargador + adaptador japonés',done:false},
+    {id:packIdSeq++,label:'Power bank cargado',done:false},
+    {id:packIdSeq++,label:'SIM local o router WiFi',done:false},
+    {id:packIdSeq++,label:'Auriculares',done:false},
+    {id:packIdSeq++,label:'Cámara de fotos',done:false},
+    {id:packIdSeq++,label:'Tarjetas de memoria extra',done:false},
+  ]},
+  {id:'salud',name:'Salud y farmacia 💊',open:false,items:[
+    {id:packIdSeq++,label:'Medicación habitual',done:false},
+    {id:packIdSeq++,label:'Antihistamínico',done:false},
+    {id:packIdSeq++,label:'Protector solar SPF50',done:false},
+    {id:packIdSeq++,label:'Tiritas y antiséptico',done:false},
+    {id:packIdSeq++,label:'Pastillas para el jet lag',done:false},
+  ]},
+  {id:'japon',name:'Esenciales Japón 🇯🇵',open:false,items:[
+    {id:packIdSeq++,label:'IC Card (Suica/Pasmo) precargada',done:false},
+    {id:packIdSeq++,label:'Google Maps offline descargado',done:false},
+    {id:packIdSeq++,label:'Google Translate (japonés offline)',done:false},
+    {id:packIdSeq++,label:'Tarjetas con alergias en japonés',done:false},
+    {id:packIdSeq++,label:'Bolsas para basura (sin papeleras)',done:false},
+    {id:packIdSeq++,label:'Toallitas húmedas',done:false},
+  ]},
+];
+function getPackTotals(){let t=0,d=0;packData.forEach(c=>{t+=c.items.length;d+=c.items.filter(i=>i.done).length});return{total:t,done:d}}
+function renderPacking(){
+  const el=document.getElementById('screen-packing');
+  const{total,done}=getPackTotals();
+  const pct=total>0?Math.round(done/total*100):0;
+  const msgs=['¡Empieza la maleta!','¡Buen comienzo!','¡Vas bien!','¡Casi lista!','🌸 ¡Todo listo!'];
+  const mIdx=Math.min(4,Math.floor(pct/25));
+  document.getElementById('sPack').textContent=pct+'%';
+  let html=`<div class="pack-summary">
+    <div class="pack-sum-emoji">${pct===100?'🎉':'🧳'}</div>
+    <div>
+      <div class="pack-pct">${pct}%</div>
+      <div class="pack-str">${done}/${total} items · ${msgs[mIdx]}</div>
+    </div>
+    <div class="pack-bar-wrap"><div class="pack-bar-fill" style="width:${pct}%"></div></div>
+  </div>`;
+  packData.forEach(cat=>{
+    const catDone=cat.items.filter(i=>i.done).length;
+    html+=`<div class="pack-cat-block">
+      <div class="pack-cat-hd" onclick="togglePackCat('${cat.id}')">
+        <span class="pack-cat-em">${cat.name.split(' ').pop()}</span>
+        <span class="pack-cat-name">${cat.name.split(' ').slice(0,-1).join(' ')}</span>
+        <span class="pack-cat-prog">${catDone}/${cat.items.length}</span>
+        <span class="pack-cat-arrow${cat.open?' open':''}">▶</span>
+      </div>`;
+    if(cat.open){
+      html+=`<div class="pack-items">`;
+      cat.items.forEach(item=>{
+        html+=`<div class="pack-item">
+          <input type="checkbox" class="pack-cb" ${item.done?'checked':''} onchange="togglePackItem('${cat.id}',${item.id})">
+          <label class="pack-item-label${item.done?' done':''}" onclick="togglePackItem('${cat.id}',${item.id})">${item.label}</label>
+          <button class="pack-item-del" onclick="delPackItem('${cat.id}',${item.id})">✕</button>
+        </div>`;
+      });
+      html+=`<div class="pack-add-row">
+        <input class="pack-add-inp" type="text" id="packInp_${cat.id}" placeholder="Añadir item..." onkeydown="if(event.key==='Enter')addPackItem('${cat.id}')">
+        <button class="pack-add-btn" onclick="addPackItem('${cat.id}')">+</button>
+      </div></div>`;
+    }
+    html+=`</div>`;
+  });
+  el.innerHTML=html;
+}
+function togglePackCat(catId){const c=packData.find(c=>c.id===catId);if(c)c.open=!c.open;save();renderPacking()}
+function togglePackItem(catId,itemId){
+  const c=packData.find(c=>c.id===catId);if(!c)return;
+  const item=c.items.find(i=>i.id===itemId);
+  if(item){item.done=!item.done;if(item.done)spawnPetals(2);}
+  save();renderPacking();
+}
+function delPackItem(catId,itemId){const c=packData.find(c=>c.id===catId);if(c)c.items=c.items.filter(i=>i.id!==itemId);save();renderPacking()}
+function addPackItem(catId){
+  const inp=document.getElementById('packInp_'+catId);
+  if(!inp||!inp.value.trim())return;
+  const c=packData.find(c=>c.id===catId);
+  if(c)c.items.push({id:packIdSeq++,label:inp.value.trim(),done:false});
+  save();renderPacking();
+}
+
+/* ── NOTES ── */
+let noteIdSeq=200;
+const NOTE_EMOJIS=['📌','💡','⭐','🗺️','🍜','🛕','💴','📸','🎌','🌸'];
+let notes=[
+  {id:noteIdSeq++,emoji:'📌',title:'Información práctica',body:'💴 1€ ≈ 160 JPY · Llevar efectivo siempre\n📶 SIM datos: Rakuten, IIJmio o au\n🚌 IC Card (Suica) funciona en todo\n🏧 7-Eleven ATM acepta tarjetas extranjeras',date:'antes del viaje'},
+  {id:noteIdSeq++,emoji:'💡',title:'Tips locales',body:'🙇 No propinas · ¡es ofensivo!\n🚬 Solo fumar en zonas habilitadas\n🗑️ No hay papeleras en la calle\n👟 Calcetines sin agujeros (templos)\n🔇 Silencio en el transporte',date:'antes del viaje'},
+  {id:noteIdSeq++,emoji:'🛕',title:'Reservas pendientes',body:'✅ TeamLab Borderless (D4) — reservar online\n⏳ Fuunji Ramen — llegar antes de abrir\n✅ JR Pass — comprar antes de salir\n⏳ Restaurante celebración Osaka (D16)',date:'pendiente'},
+];
+function renderNotes(){
+  const el=document.getElementById('screen-notes');
+  let html=`<div class="notes-list">`;
+  notes.forEach(note=>{
+    html+=`<div class="note-card">
+      <div class="note-card-top">
+        <span class="note-emoji-pick" onclick="cycleNoteEmoji(${note.id})">${note.emoji}</span>
+        <input class="note-title-inp" value="${escH(note.title)}" placeholder="Título..." oninput="updateNote(${note.id},'title',this.value)">
+        <span class="note-date">${note.date||''}</span>
+        <button class="note-del" onclick="delNote(${note.id})">🗑️</button>
+      </div>
+      <textarea class="note-body-inp" rows="4" placeholder="Escribe aquí..." oninput="updateNote(${note.id},'body',this.value)">${escH(note.body)}</textarea>
+    </div>`;
+  });
+  html+=`</div><button class="note-add-btn" onclick="addNote()">📝 Nueva nota ✨</button>`;
+  el.innerHTML=html;
+}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function addNote(){
+  notes.unshift({id:noteIdSeq++,emoji:'📝',title:'',body:'',date:new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short'})});
+  save();renderNotes();spawnPetals(2);
+  setTimeout(()=>{const inp=document.querySelector('.note-title-inp');if(inp)inp.focus()},50);
+}
+function delNote(id){notes=notes.filter(n=>n.id!==id);save();renderNotes()}
+function updateNote(id,field,val){const n=notes.find(n=>n.id===id);if(n){n[field]=val;save();}}
+function cycleNoteEmoji(id){
+  const n=notes.find(n=>n.id===id);if(!n)return;
+  const idx=(NOTE_EMOJIS.indexOf(n.emoji)+1)%NOTE_EMOJIS.length;
+  n.emoji=NOTE_EMOJIS[idx];save();renderNotes();
+}
+
+/* ── TRAVELERS ── */
+const TRAVELER_EMOJIS=['🌸','🦊','🐉','⛩️','🍜','🎋','🌺','🎌','🏯','🗼','🌊','🎎','🐼','🦋','🌙','⭐','🍡','🎴'];
+const TRAVELER_ROLES=['Organizador/a','Fotógrafo/a','Navegador/a','Foodie','Comprador/a','Aventurero/a','Planificador/a','Viajero/a'];
+let travIdSeq = 300;
+let travelers = [
+  {id:travIdSeq++, emoji:'🌸', name:'África',   role:'Organizador/a', email:''},
+  {id:travIdSeq++, emoji:'🦊', name:'Nacho',    role:'Foodie',        email:''},
+  {id:travIdSeq++, emoji:'🐉', name:'Viajero 3', role:'Viajero/a',    email:''},
+  {id:travIdSeq++, emoji:'⛩️', name:'Viajero 4', role:'Viajero/a',    email:''},
+  {id:travIdSeq++, emoji:'🎋', name:'Viajero 5', role:'Viajero/a',    email:''},
+  {id:travIdSeq++, emoji:'🌺', name:'Viajero 6', role:'Viajero/a',    email:''},
+];
+let editingTravId = null;
+let newTravEmoji  = '🌸';
+let editTravEmoji = '🌸';
+
+function travActCount(name){
+  let n=0;
+  DAYS.forEach(d=>d.acts.forEach(a=>{
+    if((a.author&&a.author.name===name)||(a.interested||[]).some(u=>u.name===name)) n++;
+  }));
+  return n;
+}
+
+function renderTravelers(){
+  const el = document.getElementById('screen-travelers');
+  const total = travelers.length;
+  const totalActs = DAYS.reduce((s,d)=>s+d.acts.length,0);
+
+  let html = `
+  <div class="travelers-header">
+    <div class="travelers-header-emoji">👥</div>
+    <div>
+      <div class="travelers-count">${total} viajeros</div>
+      <div class="travelers-sub">Japón 2026 · 10–28 septiembre</div>
+    </div>
+  </div>
+  <div class="traveler-stats">
+    <div class="trav-stat"><div class="trav-stat-val">${total}</div><div class="trav-stat-key">personas</div></div>
+    <div class="trav-stat"><div class="trav-stat-val">${totalActs}</div><div class="trav-stat-key">actividades</div></div>
+    <div class="trav-stat"><div class="trav-stat-val">${total>0?Math.round(9000/total).toLocaleString('es-ES')+'€':'—'}</div><div class="trav-stat-key">por persona</div></div>
+  </div>
+  <div class="screen-section-title">El grupo 🎌</div>`;
+
+  travelers.forEach(t => {
+    const actN = travActCount(t.name);
+    const isEditing = editingTravId === t.id;
+    html += `<div class="traveler-card${isEditing?' editing':''}">
+      <div class="traveler-card-top">
+        <div class="traveler-big-emoji" onclick="cycleTravEditEmoji(${t.id})" title="Cambiar emoji">${t.emoji}</div>
+        <div class="traveler-info">
+          <div class="traveler-name">${escH(t.name)}</div>
+          <div class="traveler-role">${escH(t.role)}</div>
+          ${actN>0?`<div class="traveler-acts">⭐ ${actN} actividades en el plan</div>`:''}
+        </div>
+        <div class="traveler-actions">
+          <button class="trav-btn edit" onclick="startEditTrav(${t.id})">✏️</button>
+          <button class="trav-btn del" onclick="delTraveler(${t.id})">🗑️</button>
+        </div>
+      </div>`;
+
+    if(isEditing){
+      html += `<div class="traveler-edit-form">
+        <div style="font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:6px">Elige emoji</div>
+        <div class="trav-emoji-picker" id="editEmojiPicker">
+          ${TRAVELER_EMOJIS.map(em=>`<button class="trav-emoji-opt${em===t.emoji?' selected':''}" onclick="pickEditEmoji(${t.id},'${em}',this)">${em}</button>`).join('')}
+        </div>
+        <div class="trav-field"><label>Nombre</label><input type="text" id="editTravName_${t.id}" value="${escH(t.name)}" maxlength="20"></div>
+        <div class="trav-field"><label>Rol en el grupo</label>
+          <input type="text" id="editTravRole_${t.id}" value="${escH(t.role)}" placeholder="ej. Foodie, Fotógrafo/a..." maxlength="30" list="roleList_${t.id}">
+          <datalist id="roleList_${t.id}">${TRAVELER_ROLES.map(r=>`<option value="${r}">`).join('')}</datalist>
+        </div>
+        <div class="trav-field"><label>Email / contacto (opcional)</label><input type="text" id="editTravEmail_${t.id}" value="${escH(t.email||'')}" placeholder="email o @usuario" maxlength="40"></div>
+        <button class="trav-save-btn" onclick="saveTraveler(${t.id})">💾 Guardar cambios</button>
+      </div>`;
+    }
+    html += `</div>`;
+  });
+
+  // Add new traveler form
+  html += `
+  <div class="screen-section-title" style="margin-top:4px">Añadir viajero ✨</div>
+  <div class="trav-add-card">
+    <div class="trav-add-title">👤 Nuevo viajero</div>
+    <div style="font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:6px">Elige emoji</div>
+    <div class="trav-emoji-picker" id="newEmojiPicker">
+      ${TRAVELER_EMOJIS.map((em,i)=>`<button class="trav-emoji-opt${i===0?' selected':''}" onclick="pickNewEmoji('${em}',this)">${em}</button>`).join('')}
+    </div>
+    <div class="trav-field"><label>Nombre *</label><input type="text" id="newTravName" placeholder="ej. Marta, Carlos..." maxlength="20" onkeydown="if(event.key==='Enter')addTraveler()"></div>
+    <div class="trav-field"><label>Rol en el grupo</label>
+      <input type="text" id="newTravRole" placeholder="ej. Foodie, Fotógrafo/a..." maxlength="30" list="newRoleList">
+      <datalist id="newRoleList">${TRAVELER_ROLES.map(r=>`<option value="${r}">`).join('')}</datalist>
+    </div>
+    <div class="trav-field"><label>Email / contacto (opcional)</label><input type="text" id="newTravEmail" placeholder="email o @usuario" maxlength="40"></div>
+    <button class="trav-save-btn" onclick="addTraveler()" style="background:var(--matcha)">✨ Añadir al grupo</button>
+  </div>
+  <div class="info-pill" style="margin-bottom:8px">💡 Los viajeros aparecen como autores al añadir actividades al itinerario</div>`;
+
+  el.innerHTML = html;
+  // restore selected emoji in new form
+  const newPicker = document.getElementById('newEmojiPicker');
+  if(newPicker){
+    newPicker.querySelectorAll('.trav-emoji-opt').forEach(b=>{
+      b.classList.toggle('selected', b.textContent===newTravEmoji);
+    });
+  }
+}
+
+function pickNewEmoji(em, btn){
+  newTravEmoji = em;
+  document.querySelectorAll('#newEmojiPicker .trav-emoji-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function pickEditEmoji(id, em, btn){
+  const t = travelers.find(t=>t.id===id);
+  if(t) t.emoji = em;
+  document.querySelectorAll('#editEmojiPicker .trav-emoji-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function cycleTravEditEmoji(id){
+  const t = travelers.find(t=>t.id===id);
+  if(!t) return;
+  const idx = (TRAVELER_EMOJIS.indexOf(t.emoji)+1)%TRAVELER_EMOJIS.length;
+  t.emoji = TRAVELER_EMOJIS[idx];
+  save(); renderTravelers();
+}
+
+function startEditTrav(id){
+  editingTravId = (editingTravId===id) ? null : id;
+  renderTravelers();
+}
+
+function saveTraveler(id){
+  const t = travelers.find(t=>t.id===id);
+  if(!t) return;
+  const nameVal = document.getElementById('editTravName_'+id)?.value.trim();
+  if(!nameVal){ document.getElementById('editTravName_'+id)?.focus(); return; }
+  t.name  = nameVal;
+  t.role  = document.getElementById('editTravRole_'+id)?.value.trim() || t.role;
+  t.email = document.getElementById('editTravEmail_'+id)?.value.trim() || '';
+  editingTravId = null;
+  save(); renderTravelers(); spawnPetals(4);
+}
+
+function delTraveler(id){
+  if(travelers.length<=1){ alert('¡El grupo necesita al menos un viajero!'); return; }
+  const t = travelers.find(t=>t.id===id);
+  if(!t || !confirm(`¿Eliminar a ${t.emoji} ${t.name} del grupo?`)) return;
+  travelers = travelers.filter(t=>t.id!==id);
+  if(editingTravId===id) editingTravId=null;
+  save(); renderTravelers(); renderDrawerNav();
+}
+
+function addTraveler(){
+  const name = document.getElementById('newTravName')?.value.trim();
+  if(!name){ document.getElementById('newTravName')?.focus(); return; }
+  const role  = document.getElementById('newTravRole')?.value.trim() || 'Viajero/a';
+  const email = document.getElementById('newTravEmail')?.value.trim() || '';
+  travelers.push({id:travIdSeq++, emoji:newTravEmoji, name, role, email});
+  newTravEmoji = '🌸';
+  save(); renderTravelers(); spawnPetals(8);
+}
+
+
+function buildTypeGrid(){
+  const g=document.getElementById('typeGrid');g.innerHTML='';
+  TYPE_ORDER.forEach(type=>{
+    const m=TYPE_META[type];const el=document.createElement('div');
+    el.className='type-option'+(type===selectedType?' selected':'');
+    el.innerHTML=`<div class="te">${m.emoji}</div><div class="tl">${m.label}</div>`;
+    el.onclick=()=>{selectedType=type;document.querySelectorAll('.type-option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')};
+    g.appendChild(el);
+  });
+}
+
+/* ── FLIGHT CARD ── */
+function flightHTML(f){
+  return `<div class="flight-banner">
+    <div class="flight-header">
+      <span class="flight-airline-badge">✈️ Air China</span>
+      <span class="flight-nums">${f.nums}</span>
+    </div>
+    ${f.segs.map(s=>`<div class="flight-seg">
+      <div class="seg-airport"><div class="seg-iata">${s.from}</div><div class="seg-city">${s.fromC}</div><div class="seg-time">${s.dep}</div></div>
+      <div class="seg-connector"><div class="seg-line"></div><div class="seg-stop-pill">${s.dur}</div><div class="seg-line"></div></div>
+      <div class="seg-airport"><div class="seg-iata">${s.to}</div><div class="seg-city">${s.toC}</div><div class="seg-time">${s.arr}</div></div>
+    </div>`).join('')}
+    <div class="flight-note">${f.note}</div>
+  </div>`;
+}
+
+/* ── WEATHER ── */
+function weatherHTML(city){
+  const w=WEATHER_BY_CITY[city]||WEATHER_BY_CITY.vuelo;
+  return `<div class="weather-panel">
+    <div class="weather-icon">${w.icon}</div>
+    <div style="flex:1">
+      <div class="weather-temp">${w.temp}</div>
+      <div class="weather-desc">${w.desc}</div>
+      <div class="weather-tags">${w.tags.map(t=>`<span class="weather-tag">${t}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+/* ── DRAWER NAV ── */
+function renderDrawerNav(){
+  const el=document.getElementById('drawerNav');el.innerHTML='';
+  const pill=document.getElementById('drawerTravPill');
+  if(pill) pill.textContent=`👥 ${travelers.length} personas`;
+  const groups=[{label:'Vuelo ida',ids:[0]},{label:'Tokio — 7 días',ids:[1,2,3,4,5,6,7]},{label:'Kioto — 5 días',ids:[8,9,10,11]},{label:'Osaka — 5 días',ids:[12,13,14,15,16]},{label:'Vuelo vuelta',ids:[17]}];
+  groups.forEach(g=>{
+    const hdr=document.createElement('div');hdr.className='nav-section-label';hdr.textContent=g.label;el.appendChild(hdr);
+    g.ids.forEach(i=>{
+      const d=DAYS[i];const c=CITY[d.city];const item=document.createElement('div');
+      item.className='nav-item'+(d.id===sel?' active':'');
+      const loc=i===0?'BCN → NRT':i===17?'KIX → BCN':c.label;
+      const cnt=d.acts.length;
+      item.innerHTML=`<span class="nav-emoji">${c.emoji}</span><span class="nav-num">D${d.num}</span><span class="nav-label">${loc}</span>${cnt?`<span class="nav-count">${cnt}</span>`:''}`;
+      item.onclick=()=>{
+        sel=d.id;
+        renderItinerary();
+        renderDrawerNav();
+        closeDrawer();
+        // if not on itinerary screen, switch to it
+        if(currentScreen!=='itinerary'){
+          document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
+          document.querySelector('.btab').classList.add('active');
+          switchScreen('itinerary',document.querySelector('.btab'));
+        }
+      };
+      el.appendChild(item);
+    });
+  });
+}
+
+/* ── ITINERARY ── */
+function renderItinerary(){
+  const d=DAYS[sel];const c=CITY[d.city];
+  let html=`<div class="day-header">
+    <div>
+      <div class="day-title">${c.emoji} Día ${d.num} <span class="city-pill" style="background:${c.bg};color:${c.tc};border-color:${c.color}66">${c.label}</span></div>
+      <div class="day-date">${d.date.charAt(0).toUpperCase()+d.date.slice(1)}</div>
+    </div>
+    <div class="day-actions">
+      <button class="day-action-btn" onclick="toggleWeather()">🌤️</button>
+    </div>
+  </div>`;
+  if(showWeather)html+=weatherHTML(d.city);
+  if(d.flight)html+=flightHTML(FLIGHTS[d.flight]);
+  const sec={};
+  const filteredActs=filterActs(d.acts);
+  filteredActs.forEach(a=>{if(!sec[a.type])sec[a.type]=[];sec[a.type].push(a)});
+  let hasContent=false;
+  TYPE_ORDER.forEach(type=>{
+    if(!sec[type])return;hasContent=true;
+    html+=`<div class="section-hd"><div class="section-hd-line"></div><div class="section-hd-label">${SECTION_LABELS[type]}</div><div class="section-hd-line"></div></div><div class="act-list">`;
+    sec[type].forEach((a,ai)=>{
+      const m=TYPE_META[a.type]||TYPE_META.visita;
+      const interested=a.interested||[];
+      const iJoined=currentUser&&interested.some(u=>u.name===currentUser.name);
+      const avatars=interested.map(u=>`<span class="act-avatar-chip" title="${u.name}">${u.emoji}</span>`).join('');
+      const authorRow=a.author
+        ?`<div class="act-social">
+            <div class="act-author"><span class="act-author-avatar">${a.author.emoji}</span><span class="act-author-name">${a.author.name}</span></div>
+            <div class="act-interested">
+              ${interested.length>0?`<div class="act-avatars">${avatars}</div>`:''}
+              <button class="join-btn ${iJoined?'joined':'not-joined'}" onclick="toggleJoin(${d.id},${a.id})">${iJoined?'✓ Apuntado':'+ Me apunto'}</button>
+            </div>
+          </div>`
+        :`<div class="act-social">
+            <div class="act-author" style="color:var(--border);font-style:italic;font-size:10px">plan base del viaje</div>
+            <div class="act-interested">
+              ${interested.length>0?`<div class="act-avatars">${avatars}</div>`:''}
+              <button class="join-btn ${iJoined?'joined':'not-joined'}" onclick="toggleJoin(${d.id},${a.id})">${iJoined?'✓ Apuntado':'+ Me apunto'}</button>
+            </div>
+          </div>`;
+      html+=`<div class="act-card" style="animation-delay:${ai*0.04}s">
+        ${a.time?`<div class="act-time">${a.time}</div>`:`<div class="act-time-dash">—</div>`}
+        <div class="act-icon" style="background:${m.bg}">${m.emoji}</div>
+        <div class="act-body">
+          <div class="act-name">${a.name}</div>
+          ${a.note?`<div class="act-note">${a.note}</div>`:''}
+          ${authorRow}
+        </div>
+        <button class="act-del" onclick="delAct(${d.id},${a.id})">🗑️</button>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  if(!d.flight&&!hasContent){
+    if(activeFilter==='mine'){
+      html+=`<div class="filter-empty"><div class="big">✏️</div><p>No has añadido ningún plan para este día.<br>¡Pulsa <strong>✨ Añadir</strong> para proponer algo!</p></div>`;
+    } else if(activeFilter==='joined'){
+      html+=`<div class="filter-empty"><div class="big">🔍</div><p>No te has apuntado a ningún plan este día.<br>Vuelve a <strong>Todos</strong> para ver qué propone el grupo.</p></div>`;
+    } else {
+      html+=`<div class="empty-state"><div class="big">🎋</div><p>Día libre como el viento...<br>¡Pulsa <strong>✨ Añadir</strong> para planificar!</p></div>`;
+    }
+  }
+  html+=`<button class="add-inline-btn" onclick="openModal()">✨ Añadir actividad ✨</button>`;
+  document.getElementById('screen-itinerary').innerHTML=html;
+  let total=0;DAYS.forEach(d=>total+=d.acts.length);
+  document.getElementById('sAct').textContent=total;
+  document.getElementById('sTravelers').textContent=travelers.length;
+}
+
+function toggleWeather(){showWeather=!showWeather;renderItinerary()}
+function openModal(){
+  selectedType='visita';
+  document.getElementById('fTime').value='';document.getElementById('fName').value='';document.getElementById('fNote').value='';
+  buildTypeGrid();document.getElementById('modalWrap').classList.remove('hidden');
+}
+function closeModal(){document.getElementById('modalWrap').classList.add('hidden')}
+function saveAct(){
+  const name=document.getElementById('fName').value.trim();if(!name)return;
+  DAYS[sel].acts.push({
+    id:idSeq++,type:selectedType,
+    time:document.getElementById('fTime').value.trim(),
+    name,note:document.getElementById('fNote').value.trim(),
+    author:currentUser?{name:currentUser.name,emoji:currentUser.emoji}:null,
+    interested:[]
+  });
+  closeModal();save();renderItinerary();renderDrawerNav();spawnPetals(5);
+}
+function delAct(dayId,actId){DAYS[dayId].acts=DAYS[dayId].acts.filter(a=>a.id!==actId);save();renderItinerary();renderDrawerNav()}
+document.getElementById('modalWrap').addEventListener('click',e=>{if(e.target===document.getElementById('modalWrap'))closeModal()});
+
+/* ── INIT ── */
+(async()=>{
+  initWelcome();
+  await loadSaved();
+  renderItinerary();
+  renderDrawerNav();
+})();
+</script>
+</body>
+</html>
