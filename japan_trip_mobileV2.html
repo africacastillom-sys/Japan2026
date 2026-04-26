@@ -269,7 +269,7 @@ body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);display:flex;flex-di
   <div class="header-left">
     <button class="menu-btn" onclick="openDrawer()">☰</button>
     <div class="header-title">
-      🌸 Japón 2025
+      🌸 Japón 2026
       <small>日本旅行 · 10–28 sep</small>
     </div>
   </div>
@@ -320,7 +320,7 @@ body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);display:flex;flex-di
 <div class="drawer" id="drawer">
   <div class="drawer-header">
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
-    <div class="drawer-title">🌸 Japón 2025</div>
+    <div class="drawer-title">🌸 Japón 2026</div>
     <div class="drawer-sub">日本旅行 — Nuestro viaje soñado</div>
     <div class="drawer-meta">
       <span class="meta-pill">📅 10–28 sep</span>
@@ -420,8 +420,8 @@ const TYPE_META={
 const TYPE_ORDER=['vuelo','transporte','hotel','visita','comida','libre'];
 const SECTION_LABELS={vuelo:'✈️ Vuelos',transporte:'🚄 Transporte',hotel:'🏨 Alojamiento',visita:'🛕 Visitas',comida:'🍜 Gastronomía',libre:'🎌 Tiempo libre'};
 const FLIGHTS={
-  outbound:{nums:'CA578 · CA929',date:'10 sep 2025',segs:[{from:'BCN',fromC:'Barcelona 🇪🇸',dep:'12:40',to:'PVG',toC:'Shanghái 🇨🇳',arr:'06:50+1',dur:'~11h'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'~09:30',to:'NRT',toC:'Tokio 🇯🇵',arr:'~13:30',dur:'~3h'}],note:'🔄 Escala en Shanghái Pudong · Llegada a Tokio Narita el 11/09'},
-  return:{nums:'CA927 · CA839',date:'27–28 sep 2025',segs:[{from:'KIX',fromC:'Osaka 🇯🇵',dep:'~18:00',to:'PVG',toC:'Shanghái 🇨🇳',arr:'~20:00',dur:'~2h 20m'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'00:45',to:'BCN',toC:'Barcelona 🇪🇸',arr:'08:05',dur:'~13h'}],note:'🔄 Escala en Shanghái · Llegada BCN 28/09 a las 08:05h'},
+  outbound:{nums:'CA578 · CA929',date:'10 sep 2026',segs:[{from:'BCN',fromC:'Barcelona 🇪🇸',dep:'12:40',to:'PVG',toC:'Shanghái 🇨🇳',arr:'06:50+1',dur:'~11h'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'~09:30',to:'NRT',toC:'Tokio 🇯🇵',arr:'~13:30',dur:'~3h'}],note:'🔄 Escala en Shanghái Pudong · Llegada a Tokio Narita el 11/09'},
+  return:{nums:'CA927 · CA839',date:'27–28 sep 2026',segs:[{from:'KIX',fromC:'Osaka 🇯🇵',dep:'~18:00',to:'PVG',toC:'Shanghái 🇨🇳',arr:'~20:00',dur:'~2h 20m'},{from:'PVG',fromC:'Shanghái 🇨🇳',dep:'00:45',to:'BCN',toC:'Barcelona 🇪🇸',arr:'08:05',dur:'~13h'}],note:'🔄 Escala en Shanghái · Llegada BCN 28/09 a las 08:05h'},
 };
 const WEATHER_BY_CITY={
   tokyo:{icon:'⛅',temp:'26°C',desc:'Nublado parcial · septiembre agradable',tags:['💧 Humedad 65%','🌬️ Brisa suave','☂️ Lleva paraguas']},
@@ -429,7 +429,7 @@ const WEATHER_BY_CITY={
   osaka:{icon:'🌈',temp:'28°C',desc:'Cálido y despejado · perfecto para comer',tags:['🌶️ Mucho calor','🎉 Ambiente festivo']},
   vuelo:{icon:'🌍',temp:'—',desc:'Viaje en avión · ¡que empiece la aventura!',tags:['💺 En el avión','🍱 Bento box']},
 };
-function dateStr(n){const d=new Date(2025,8,10+n);return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}
+function dateStr(n){const d=new Date(2026,8,10+n);return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}
 const rMap=['vuelo','tokyo','tokyo','tokyo','tokyo','tokyo','tokyo','tokyo','kyoto','kyoto','kyoto','kyoto','kyoto','osaka','osaka','osaka','osaka','vuelo'];
 const DAYS=Array.from({length:18},(_,i)=>({id:i,num:i+1,date:dateStr(i),city:rMap[i],flight:i===0?'outbound':i===17?'return':null,acts:[]}));
 const DA={
@@ -463,7 +463,7 @@ const JSONBIN_ID  = '';   // ← pega aquí tu Bin ID  (ej: '6642abc123def...')
 const JSONBIN_KEY = '';   // ← pega aquí tu API Key (ej: '$2a$10$...')
 
 /* ── SYNC ENGINE ── */
-const LS = 'japan2025_';
+const LS = 'japan2026_';
 let saveTimer = null;
 let isSaving = false;
 let lastSavedHash = '';
